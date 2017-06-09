@@ -1,0 +1,216 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="presentation/css/reveal.css">
+    <link rel="stylesheet" href="presentation/css/theme/beige.css">
+    <link rel="stylesheet" href="presentation/lib/css/zenburn.css">
+</head>
+
+<body>
+    <div class="reveal">
+        <div class="slides">
+            <section>
+                <h2>Critical Rendering Path</h2>
+                <blockquote>
+                    &ldquo;Steps a browser must take to convert HTML, CSS and JavaScript into a living,
+                    breathing website.&rdquo;
+                </blockquote>
+                <img class="plain" style="width: 700px" src="http://www.learnperf.com/img/critical-rendering-path.png"
+                />
+            </section>
+            <section>
+                <h2>Why learn about the Critical Rendering Path (CRP)?</h2>
+                <ul>
+                    <li class="fragment">Foundation for well-performing interactive applications</li>
+                </ul>
+            </section>
+            <section>
+                <section>
+                    <h2>Constructing Object Model</h2>
+                    <ul>
+                        <li class="fragment">HTML --> DOM tree</li>
+                        <li class="fragment">CSS --> CSSOM tree</li>
+                    </ul>
+                </section>
+                <section>
+                    <img class="plain" style="width: 100%" src="http://www.learnperf.com/img/critical-rendering-path.png"
+                    />
+                </section>
+            </section>
+            <section>
+                <section>
+                    <h3>Parse HTML event</h3>
+                    <img class="plain" style="width: 100%" src="https://developers.google.com/web/fundamentals/performance/critical-rendering-path/images/full-process.png"
+                    />
+                </section>
+                <section>
+                    <img class="plain" style="width: 100%" src="http://www.learnperf.com/img/critical-rendering-path.png"
+                    />
+                </section>
+            </section>
+            <section>
+                <section>
+                    <h3>Recalculate style event</h3>
+                    <img class="plain" style="width: 100%" src="https://developers.google.com/web/fundamentals/performance/critical-rendering-path/images/cssom-construction.png"
+                    />
+                    <img class="plain" style="width: 100%" src="https://developers.google.com/web/fundamentals/performance/critical-rendering-path/images/cssom-tree.png"
+                    />
+                    <p class="fragment">Not shown: default (user agent) styles</p>
+                </section>
+                <section>
+                    <img class="plain" style="width: 100%" src="http://www.learnperf.com/img/critical-rendering-path.png"
+                    />
+                </section>
+            </section>
+
+            <section>
+                <section>
+                    <h3>Layout event</h3>
+                    <p>Render tree construction</p>
+                    <img class="plain" style="width: 100%" src="https://developers.google.com/web/fundamentals/performance/critical-rendering-path/images/render-tree-construction.png"
+                    />
+                    </ul>
+                </section>
+                <section>
+                    <h3>Layout event</h3>
+                    <p>Position and size calculation (a.k.a. Reflow)</p>
+                </section>
+                <section>
+                    <img class="plain" style="width: 100%" src="http://www.learnperf.com/img/critical-rendering-path.png"
+                    />
+                </section>
+            </section>
+
+            <section>
+                <section>
+                    <h3>Paint event</h3>
+                    <p>Convert render tree to pixels on the screen</p>
+                </section>
+                <section>
+                    <h3>Paint event</h3>
+                    <p>Two tasks:</p>
+                    <ul>
+                        <li>Create a list of draw calls</li>
+                        <li>Filling in the pixels (rasterization)</li>
+                    </ul>
+                </section>
+                <section>
+                    <img class="plain" style="width: 100%" src="http://www.learnperf.com/img/critical-rendering-path.png"
+                    />
+                </section>
+            </section>
+
+
+            <section>
+                <section>
+                    <h3>Composite layers event</h3>
+                    <p>Combine layers into a single picture, in the correct order</p>
+                    <pre style="width: 40%"><code class="hljs">.moving-element {
+  will-change: transform;
+}</code></pre>
+                    <img class="plain" style="width: 30%" src="https://developers.google.com/web/fundamentals/performance/rendering/images/simplify-paint-complexity-and-reduce-paint-areas/layers.jpg">
+                </section>
+                <section>
+                    <img class="plain" style="width: 100%" src="http://www.learnperf.com/img/critical-rendering-path.png"
+                    />
+                </section>
+            </section>
+
+            <section>
+                <h2>Use CRP to your advantage(1)</h2>
+                <p>Use async and defer</p>
+                <img class="plain" style="width: 100%" src="http://peter.sh/wp-content/uploads/2010/09/execution2.jpg">
+            </section>
+
+            <section>
+                <section>
+                    <h2>Use CRP to your advantage(2)</h2>
+                    <p>Know what parts of the pipeline are triggered</p>
+                    <p class="fragment">Layout change (e.g. width)</p>
+                    <img class="plain" style="width: 100%" src="https://developers.google.com/web/fundamentals/performance/rendering/images/intro/frame-full.jpg">
+                </section>
+                <section>
+                    <h2>Use CRP to your advantage(2)</h2>
+                    <p>Know what parts of the pipeline are triggered</p>
+                    <p class="fragment">Paint only property change (e.g. text-color)</p>
+                    <img class="plain" style="width: 100%" src="https://developers.google.com/web/fundamentals/performance/rendering/images/intro/frame-no-layout.jpg">
+                </section>
+                <section>
+                    <h2>Use CRP to your advantage(2)</h2>
+                    <p>Know what parts of the pipeline are triggered</p>
+                    <p class="fragment">Transform or Opacity (but only if the element is on a separate layer)</p>
+                    <img class="plain" style="width: 100%" src="https://developers.google.com/web/fundamentals/performance/rendering/images/intro/frame-no-layout-paint.jpg">
+                </section>
+                <section>
+                    <h2>Use CRP to your advantage(2)</h2>
+                    <p>Check what properties trigger Layout/Paint/Composite </p>
+<a href="https://csstriggers.com">csstriggers.com</a>
+                </section>
+            </section>
+
+
+            <section>
+                <section>
+                    <h2>Use CRP to your advantage(3)</h2>
+                    <p><code>contain: layout</code></p>
+                    <p>
+Layout changes to this element cannot affect layout of outside elements, and vice versa.
+</p>
+                </section>
+                <section>
+                    <h2>Use CRP to your advantage(3)</h2>
+                    <p><code>contain: paint</code></p>
+                    <p>
+Descendants of this element don’t display outside its bounds, so if the element is off-screen or otherwise not visible, its descendants are also guaranteed to be not visible. 
+</p>
+                </section>
+                <section>
+                    <h2>Use CRP to your advantage(3)</h2>
+                    <p><code>contain: size</code></p>
+                    <p>
+This element’s children do not affect its size. Careful, if you don't explicitly set the elements size, it will be rendered 0px by 0px.
+</p>
+                </section>
+                <section>
+                    <h2>Use CRP to your advantage(3)</h2>
+                    <p><code>contain: style</code></p>
+                    <p>
+Properties which could have an effect on more than this element and its descendants don’t get propagated outside this element. Careful, this is not scoped styling such as provided by Shadow DOM.
+</p>
+                </section>
+            </section>
+
+
+        </div>
+    </div>
+    <script src="presentation/lib/js/head.min.js"></script>
+    <script src="presentation/js/reveal.js"></script>
+    <script>
+        Reveal.initialize(
+        {
+            controls: true,
+            progress: true,
+            history: true,
+            center: true,
+            transition: 'slide', // none/fade/slide/convex/concave/zoom // More info https://github.com/hakimel/reveal.js#dependencies
+            // More info https://github.com/hakimel/reveal.js#dependencies
+            dependencies: [
+                //		{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+                //		{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+                //		{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+                {
+                    src: 'presentation/plugin/highlight/highlight.js',
+                    async: true,
+                    callback: function()
+                    {
+                        hljs.initHighlightingOnLoad();
+                    }
+                },
+                //		{ src: 'plugin/zoom-js/zoom.js', async: true },
+                //		{ src: 'plugin/notes/notes.js', async: true }
+            ]
+        });
+    </script>
+</body>
+
+</html>
